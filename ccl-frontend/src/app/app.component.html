@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <h1 class="text-center mb-4 text-danger fw-bold">{{ title }}</h1>
+
+  <!-- MENÚ DE NAVEGACIÓN -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded shadow-sm mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand text-danger fw-bold" href="#">CCL</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a routerLink="/login" class="nav-link text-white">Login</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/register" class="nav-link text-white">Registro</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/dashboard" class="nav-link text-white">Dashboard</a>
+          </li>
+        </ul>
+        <button class="btn btn-outline-danger fw-bold" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENEDOR PARA LAS VISTAS -->
+  <div class="card shadow-lg p-4 bg-light">
+    <router-outlet></router-outlet>
+  </div>
+</div>

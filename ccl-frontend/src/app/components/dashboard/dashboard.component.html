@@ -1,0 +1,8 @@
+<h2>DASHBOARD</h2>
+
+<!-- LISTAMOS LOS PRODUCTOS CON *ngFor -->
+<ul>
+  <li *ngFor="let p of productos">
+    {{ p.nombre }} - STOCK: {{ p.stock }} - PRECIO: {{ p.precio }}
+  </li>
+</ul>
