@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Ccl.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+66a0b9e9b0c85443cef17f4f9fcc450c22dfbfca")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+770566da0b3ff3dc2e97a25b6a53c6afc452bf40")]
 [assembly: System.Reflection.AssemblyProductAttribute("Ccl.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Ccl.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
