@@ -1,8 +1,44 @@
 <h2>DASHBOARD</h2>
+<h2>Inventario</h2>
 
-<!-- LISTAMOS LOS PRODUCTOS CON *ngFor -->
-<ul>
-  <li *ngFor="let p of productos">
-    {{ p.nombre }} - STOCK: {{ p.stock }} - PRECIO: {{ p.precio }}
-  </li>
-</ul>
+// Tabla para mostrar los productos en el inventario
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>SKU</th>
+      <th>Nombre</th>
+      <th>Stock</th>
+      <th>Stock mínimo</th>
+      <th>Activo</th>
+    </tr>
+  </thead>
+  <tbody>
+    // Itera sobre la lista de productos y muestra cada uno en una fila
+    // Usa *ngFor para repetir la fila por cada producto en el array 'productos'
+    <tr *ngFor="let p of productos">
+      <td>{{ p.id }}</td>
+      <td>{{ p.sku }}</td>
+      <td>{{ p.name }}</td>
+      <td>{{ p.stock }}</td>
+      <td>{{ p.minStock }}</td>
+      <td>{{ p.active ? 'Sí' : 'No' }}</td>
+    </tr>
+  </tbody>
+</table>
+<!-- FORMULARIO DE MOVIMIENTOS -->
+<h2>Registrar movimiento</h2>
+<form (ngSubmit)="registrarMovimiento()">
+  <label>Producto:</label>
+  <select [(ngModel)]="movimiento.productId" name="productId" required>
+    <option *ngFor="let p of productos" [value]="p.id">{{ p }}</option>
+  </select>
+
+  <label>Cantidad:</label>
+  <input type="number" [(ngModel)]="movimiento.cantidad" name="cantidad" required />
+
+  <label>Tipo:</label>
+  <select [(ngModel)]="movimiento.type" name="type" required>
+    <option value="IN">Entrada</option>
+    <option value="OUT">Salida</option>
+  </select>

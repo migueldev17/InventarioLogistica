@@ -1,26 +1,42 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginRequest } from '../models/login-request';
+import { environment } from './../../environments/environment';
+import { RegisterRequest } from '../models/register-request';
 import { AuthResponse } from '../models/auth-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5062/api/Auth';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  // Aquí esperamos un objeto LoginRequest, no dos argumentos separados
-  login(data: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
+  // MÉTODO PARA HACER LOGIN
+  login(data: { username: string; password: string }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, data);
   }
 
-  register(data: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data);
+  // MÉTODO PARA HACER REGISTRO
+  register(data: RegisterRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, data);
   }
-   logout():void{
+
+  // MÉTODO PARA HACER LOGOUT
+  logout(): void {
     localStorage.removeItem('token');
-   }
+    localStorage.removeItem('role');
+  }
+
+  // MÉTODO NUEVO: REVISAMOS SI HAY TOKEN EN LOCALSTORAGE
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    return !!token; // DEVUELVE TRUE SI EXISTE EL TOKEN
+  }
+
+  // MÉTODO NUEVO: OBTENEMOS EL ROL DEL USUARIO
+  getRole(): string | null {
+    return localStorage.getItem('role'); // EL ROL LO GUARDAMOS CUANDO SE HACE LOGIN
+  }
 }
