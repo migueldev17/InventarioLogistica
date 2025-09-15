@@ -1,19 +1,22 @@
+import { Injectable } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
 
-// GUARD PARA PROTEGER RUTAS QUE REQUIEREN TOKEN
-export const authGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router);
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard {
+  constructor(private router: Router) {}
 
-  // BUSCAMOS EL TOKEN EN LOCALSTORAGE
-  const token = localStorage.getItem('token');
+  canActivate(): boolean {
+    // REVISAMOS SI EXISTE TOKEN EN LOCALSTORAGE
+    const token = localStorage.getItem('token');
 
-  if (token) {
-    // SI EXISTE, SE DEJA PASAR
-    return true;
-  } else {
-    // SI NO HAY TOKEN, REDIRIGIMOS AL LOGIN
-    router.navigate(['/login']);
-    return false;
+    if (token) {
+      return true; // SI EXISTE, DEJAMOS PASAR
+    } else {
+      // SI NO HAY TOKEN, REDIRIGIMOS AL LOGIN
+      this.router.navigate(['/login']);
+      return false;
+    }
   }
-};
+}
