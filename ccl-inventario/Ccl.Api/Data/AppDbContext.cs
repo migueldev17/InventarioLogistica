@@ -1,62 +1,36 @@
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Ccl.Api.Models;
 
 namespace Ccl.Api.Data
 {
-    public static class DbSeeder
+    public class AppDbContext : DbContext
     {
-        public static async Task SeedAsync(AppDbContext context)
+        // Constructor que recibe opciones de configuración
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options) // Llama al constructor base de DbContext
         {
-            // SI NO EXISTEN USUARIOS, CREAR LOS INICIALES
-            if (!context.Users.Any())
-            {
-                // SE ENCRIPTA LA CONTRASEÑA CON BCRYPT
-                var adminPassword = BCrypt.Net.BCrypt.HashPassword("Admin123*");
-                var userPassword = BCrypt.Net.BCrypt.HashPassword("User123*");
+        }
 
-                context.Users.AddRange(
-                    new User
-                    {
-                        Username = "admin",
-                        PasswordHash = adminPassword,
-                        Role = "Admin"  // EL ROL VA EN MAYÚSCULA PARA USARLO EN [Authorize(Roles = "Admin")]
-                    },
-                    new User
-                    {
-                        Username = "usuario",
-                        PasswordHash = userPassword,
-                        Role = "Users" // ROL POR DEFECTO PARA USUARIO NORMAL
-                    }
-                );
+        //  Tablas gestionadas por EF Core
+        public DbSet<User> Users { get; set; } = default!;
+        public DbSet<Product> Productos { get; set; } = default!;
+        public DbSet<Movement> Movements { get; set; } = default!;
 
-                await context.SaveChangesAsync();
-            }
+        // Configuraciones adicionales
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configuraciones de las entidades
+            base.OnModelCreating(modelBuilder);
 
-            // OPCIONAL: SI NO EXISTEN PRODUCTOS, CREAR LOS INICIALES
-            if (!context.Productos.Any())
-            {
-                context.Productos.AddRange(
-                    new Product
-                    {
-                        Sku = "TEC001",
-                        Name = "Teclado",
-                        Stock = 10,
-                        MinStock = 5,
-                        Active = true
-                    },
-                    new Product
-                    {
-                        Sku = "MOU001",
-                        Name = "Mouse",
-                        Stock = 20,
-                        MinStock = 10,
-                        Active = true
-                    }
-                );
-
-                await context.SaveChangesAsync();
-            }
+            // Configuraciones adicionales si es necesario
+            modelBuilder.Entity<User>().ToTable("Usuarios"); // _db.Users -> tabla "Usuarios"
+            modelBuilder.Entity<Product>().ToTable("Productos");// _db.Products -> tabla "Productos"
+            modelBuilder.Entity<Movement>().ToTable("Movimientos");// _db.Movements -> tabla "Movimientos"
+            // Datos iniciales de ejemplo
+            modelBuilder.Entity<Product>().HasData(
+                new Product { Id = 1, Sku = "TEC001", Name = "Teclado", Stock = 10, MinStock = 5, Active = true },// Datos iniciales de ejemplo
+                new Product { Id = 2, Sku = "MOU001", Name = "Mouse", Stock = 20, MinStock = 10, Active = true }// Datos iniciales de ejemplo
+            );
         }
     }
 }

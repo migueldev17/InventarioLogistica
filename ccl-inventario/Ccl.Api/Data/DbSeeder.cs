@@ -1,6 +1,7 @@
-using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
 using Ccl.Api.Models;
+using BCrypt.Net;
 
 namespace Ccl.Api.Data
 {
@@ -8,7 +9,7 @@ namespace Ccl.Api.Data
     {
         public static async Task SeedAsync(AppDbContext context)
         {
-            // SI NO EXISTEN USUARIOS, CREAR LOS INICIALES
+            // Si no hay usuarios, creamos los iniciales
             if (!context.Users.Any())
             {
                 var adminPassword = BCrypt.Net.BCrypt.HashPassword("Admin123*");
@@ -19,38 +20,13 @@ namespace Ccl.Api.Data
                     {
                         Username = "admin",
                         PasswordHash = adminPassword,
-                        Role = "Admin"  // EN MAYÚSCULA PARA USARLO CON [Authorize(Roles = "Admin")]
+                        Role = "admin"
                     },
                     new User
                     {
                         Username = "usuario",
                         PasswordHash = userPassword,
-                        Role = "Users" // ROL POR DEFECTO PARA USUARIO NORMAL
-                    }
-                );
-
-                await context.SaveChangesAsync();
-            }
-
-            // SI NO EXISTEN PRODUCTOS, CREAR LOS INICIALES
-            if (!context.Productos.Any())
-            {
-                context.Productos.AddRange(
-                    new Product
-                    {
-                        Sku = "TEC001",
-                        Name = "Teclado",
-                        Stock = 10,
-                        MinStock = 5,
-                        Active = true
-                    },
-                    new Product
-                    {
-                        Sku = "MOU001",
-                        Name = "Mouse",
-                        Stock = 20,
-                        MinStock = 10,
-                        Active = true
+                        Role = "user"
                     }
                 );
 

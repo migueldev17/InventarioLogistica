@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Ccl.Api.Controllers;
 [ApiController]
 [Route("api/movements")]
-[Authorize(Roles = "Admin")] // Solo los usuarios con rol Admin tienen acceso
+[Authorize(Roles = "admin")] // Solo los usuarios con rol Admin tienen acceso
 
 public class MovementsController : ControllerBase
 {
