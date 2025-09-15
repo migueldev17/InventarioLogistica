@@ -16,8 +16,16 @@
           <li class="nav-item">
             <a routerLink="/dashboard" class="nav-link text-white">Dashboard</a>
           </li>
+          <!-- SOLO ADMINS VEN ESTA OPCIÓN -->
+          <li class="nav-item" *ngIf="role === 'Admin'">
+            <a routerLink="/movimientos" class="nav-link text-warning">Movimientos</a>
+          </li>
         </ul>
-        <button class="btn btn-outline-danger fw-bold" (click)="logout()">Logout</button>
+
+        <!-- BOTÓN LOGOUT SOLO SI ESTÁ LOGUEADO -->
+        <button *ngIf="isLoggedIn" class="btn btn-outline-danger fw-bold" (click)="logout()">
+          Logout
+        </button>
       </div>
     </div>
   </nav>

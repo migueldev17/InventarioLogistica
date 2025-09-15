@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/login-request';
 import { AuthResponse } from '../../models/auth-response';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -17,9 +18,9 @@ export class LoginComponent {
   password: string = '';
   message: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  login() {
+  /* login() {
     const loginData: LoginRequest = {
       username: this.username,
       password: this.password
@@ -34,6 +35,22 @@ export class LoginComponent {
       // ERROR EN LOGIN
       error: () => {
         this.message = 'Usuario o clave incorrectos, revisa bien compa';
+      } */
+  login() {
+    this.authService.login({ username: this.username, password: this.password }).subscribe({
+      next: (res) => {
+        // GUARDAMOS TOKEN Y ROL EN LOCALSTORAGE
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('role', res.role);
+        localStorage.setItem('username', res.username);
+
+        this.message = 'Login exitoso ✅';
+
+        // REDIRECCIONAMOS AL DASHBOARD
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.message = 'Credenciales incorrectas ❌';
       }
     });
   }
